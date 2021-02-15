@@ -19,7 +19,7 @@ const Header = () => {
 										className="fa fa-shopping-cart mx-2"
 										aria-hidden="true"
 									></i>
-									Home
+									Cart
 								</Nav.Link>
 							</LinkContainer>
 
