@@ -20,11 +20,12 @@ export const authUser = asyncHandler(async (req, res) => {
 				token: generateToken(user._id),
 			})
 		} else {
-			res.send('WRONG PASSWORD')
+			res.status(401)
 			throw new Error(' Wrong password')
 		}
 	} else {
-		res.send('User not found')
+		res.status(401)
+		throw new Error('User not found')
 	}
 })
 
@@ -41,7 +42,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 		throw new Error('User already exists')
 	}
 
-	const user = User.create({
+	const user = await User.create({
 		name,
 		email,
 		password,
@@ -64,7 +65,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 // @route get api/users/profile
 // @access Public
 export const getUserProfile = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.user._id)
+	const user = req.user
 
 	if (user) {
 		res.json({
