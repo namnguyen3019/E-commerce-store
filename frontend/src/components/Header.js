@@ -11,7 +11,7 @@ const Header = ({ history }) => {
 	const logoutHandler = () => {
 		dispatch(logout())
 	}
-	console.log(userInfo)
+
 	return (
 		<header>
 			<Container>

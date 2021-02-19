@@ -21,8 +21,11 @@ app.use('/api/products', productRoutes)
 // User Routes
 app.use('/api/users', userRoutes)
 // Order Routes
-app.use('/api/order', orderRoutes)
+app.use('/api/orders', orderRoutes)
 
+app.get('/api/config/paypal', (req, res) =>
+	res.send(process.env.PAYPAL_CLIENT_ID)
+)
 const PORT = process.env.PORT || 5000
 app.listen(
 	PORT,

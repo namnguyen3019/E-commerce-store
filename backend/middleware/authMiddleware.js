@@ -20,7 +20,7 @@ const protect = asyncHandler(async function (req, res, next) {
 		} catch (error) {
 			console.error(error)
 			res.status(401)
-			throw new Error(' Wrong password')
+			throw new Error(' Wrong email or password')
 		}
 	} else {
 		res.status(401)

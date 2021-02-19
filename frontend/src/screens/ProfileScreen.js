@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { getMyOrders } from '../actions/orderActions'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import Loader from '../components/Loader'
 import Message from '../components/Message'
+import MyOders from '../components/MyOders'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userContants'
 const ProfileScreen = ({ history }) => {
 	const [name, setName] = useState('')
@@ -19,6 +22,12 @@ const ProfileScreen = ({ history }) => {
 	const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
 	const { success } = userUpdateProfile
 
+	const orderList = useSelector((state) => state.orderList)
+	const {
+		loading: loadingOrderList,
+		success: loadingOrderListSuccess,
+		allOrders,
+	} = orderList
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -30,6 +39,7 @@ const ProfileScreen = ({ history }) => {
 					type: USER_UPDATE_PROFILE_RESET,
 				})
 				dispatch(getUserDetails('profile'))
+				dispatch(getMyOrders())
 			} else {
 				setName(user.name)
 				setEmail(user.email)
@@ -48,7 +58,7 @@ const ProfileScreen = ({ history }) => {
 	return (
 		<Container>
 			<Row>
-				<Col sm={12} md={6}>
+				<Col sm={12} md={3}>
 					{success && (
 						<Message variant="success"> Profile Updated </Message>
 					)}
@@ -92,8 +102,15 @@ const ProfileScreen = ({ history }) => {
 						</Button>
 					</Form>
 				</Col>
-				<Col sm={12} md={6}>
+				<Col sm={12} md={9}>
 					<h3>My Orders</h3>
+					{loadingOrderList ? (
+						<Loader />
+					) : !loadingOrderListSuccess ? (
+						<Message>Empty</Message>
+					) : (
+						<MyOders orderList={allOrders} />
+					)}
 				</Col>
 			</Row>
 		</Container>
