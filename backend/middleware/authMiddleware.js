@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import User from '../models/userModel.js'
 
 // Check if the token is correct
-const protect = asyncHandler(async function (req, res, next) {
+export const protect = asyncHandler(async function (req, res, next) {
 	let token
 
 	if (
@@ -28,4 +28,13 @@ const protect = asyncHandler(async function (req, res, next) {
 	}
 })
 
-export default protect
+export const isAdmin = asyncHandler(async function (req, res, next) {
+	const user = await User.findById(req.user._id)
+
+	if (user && user.isAdmin) {
+		next()
+	} else {
+		res.status(401)
+		throw new Error(' Not authorized ')
+	}
+})

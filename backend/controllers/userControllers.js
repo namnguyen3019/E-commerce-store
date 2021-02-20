@@ -105,3 +105,16 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 		throw new Error('User not found')
 	}
 })
+
+// Get all users data as a admin
+
+export const getUsers = asyncHandler(async (req, res) => {
+	const users = await User.find({})
+
+	if (users) {
+		res.json(users)
+	} else {
+		res.status(401)
+		throw new Error('not authorized')
+	}
+})
