@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Col, Image, ListGroup, Row } from 'react-bootstrap'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrderById, payOrder } from '../actions/orderActions'
+import { resetCart } from '../actions/cartActions'
+import { getMyOrders, getOrderById, payOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { ORDER_PAY_RESET } from '../constants/orderContants'
@@ -54,6 +55,11 @@ const OrderScreen = ({ history, match }) => {
 	const successPaymentHandler = (paymentResult) => {
 		console.log(paymentResult)
 		dispatch(payOrder(orderId, paymentResult))
+		if (paymentResult.status === 'COMPLETED') {
+			dispatch(resetCart())
+			dispatch(getMyOrders())
+		}
+		history.push('/')
 	}
 	return (
 		<>
@@ -151,7 +157,7 @@ const OrderScreen = ({ history, match }) => {
 								</ListGroup.Item>
 								<ListGroup.Item>
 									{loadingPay && <Loader />}
-									{!sdkReady ? null : (
+									{sdkReady && (
 										<PayPalButton
 											amount={order.totalPrice}
 											onSuccess={successPaymentHandler}

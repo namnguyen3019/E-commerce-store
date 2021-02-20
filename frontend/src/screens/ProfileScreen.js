@@ -23,13 +23,16 @@ const ProfileScreen = ({ history }) => {
 	const { success } = userUpdateProfile
 
 	const orderList = useSelector((state) => state.orderList)
+	console.log(orderList)
 	const {
 		loading: loadingOrderList,
 		success: loadingOrderListSuccess,
+		error: loadingOrderListError,
 		allOrders,
 	} = orderList
 	const dispatch = useDispatch()
 
+	// UPDATE users Profile
 	useEffect(() => {
 		if (!userInfo) {
 			history.push('/login')
@@ -39,13 +42,20 @@ const ProfileScreen = ({ history }) => {
 					type: USER_UPDATE_PROFILE_RESET,
 				})
 				dispatch(getUserDetails('profile'))
-				dispatch(getMyOrders())
 			} else {
 				setName(user.name)
 				setEmail(user.email)
 			}
 		}
 	}, [userInfo, history, user, dispatch, success])
+
+	// Fetching all orders
+	useEffect(() => {
+		if (!loadingOrderListSuccess && !loadingOrderListError) {
+			dispatch(getMyOrders())
+		}
+	}, [dispatch, orderList])
+
 	const submitHandler = (e) => {
 		e.preventDefault()
 		dispatch(

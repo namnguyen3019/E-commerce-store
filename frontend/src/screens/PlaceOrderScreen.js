@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { createOrder } from '../actions/orderActions'
 import CheckoutSteps from '../components/CheckoutSteps'
 import Message from '../components/Message'
-
+import { ORDER_CREATE_RESET } from '../constants/orderContants'
 const PlaceOrderScreen = ({ history }) => {
 	const cart = useSelector((state) => state.cart)
 	const orderCreate = useSelector((state) => state.orderCreate)
@@ -35,8 +35,12 @@ const PlaceOrderScreen = ({ history }) => {
 	useEffect(() => {
 		if (success) {
 			history.push(`/orders/${order._id}`)
+			dispatch({
+				type: ORDER_CREATE_RESET,
+			})
 		}
 	}, [history, success])
+	//Submit payment
 	const submitHandler = (e) => {
 		e.preventDefault()
 		console.log(cart.cartItems)
@@ -154,7 +158,7 @@ const PlaceOrderScreen = ({ history }) => {
 								variant="danger"
 								type="button"
 								className="btn-block"
-								disabled={cart.cartItems === 0}
+								disabled={cart.cartItems.length === 0}
 							>
 								{' '}
 								Place Order

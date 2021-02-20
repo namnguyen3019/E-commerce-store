@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 const MyOders = ({ orderList }) => {
 	return (
-		<Table striped bordered hover>
+		<Table striped bordered hover responsive="sm">
 			<thead>
 				<tr>
 					<th>ID</th>
@@ -14,7 +14,7 @@ const MyOders = ({ orderList }) => {
 				</tr>
 			</thead>
 			<tbody>
-				{orderList.map((order, index) => {
+				{orderList.reverse().map((order, index) => {
 					return (
 						<tr key={index}>
 							<td>{order._id}</td>

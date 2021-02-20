@@ -1,6 +1,7 @@
 import {
 	ORDER_CREATE_FAIL,
 	ORDER_CREATE_REQUEST,
+	ORDER_CREATE_RESET,
 	ORDER_CREATE_SUCCESS,
 	ORDER_FETCH_FAIL,
 	ORDER_FETCH_REQUEST,
@@ -32,6 +33,8 @@ export const orderCreateReducer = (state = {}, action) => {
 				loading: false,
 				error: action.payload,
 			}
+		case ORDER_CREATE_RESET:
+			return {}
 		default:
 			return state
 	}
@@ -62,7 +65,10 @@ export const orderDetailsReducer = (state = { loading: true }, action) => {
 }
 
 // GET all Orders
-export const orderListReducer = (state = [], action) => {
+export const orderListReducer = (
+	state = { allOrders: [], loading: true },
+	action
+) => {
 	switch (action.type) {
 		case ORDER_LIST_REQUEST:
 			return {
