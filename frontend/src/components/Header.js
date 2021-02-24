@@ -37,6 +37,13 @@ const Header = ({ history }) => {
 									title={userInfo.name}
 									id="username"
 								>
+									{userInfo.isAdmin ? (
+										<LinkContainer to="/users/userlist">
+											<NavDropdown.Item href="#">
+												User List
+											</NavDropdown.Item>
+										</LinkContainer>
+									) : null}
 									<LinkContainer to="/profile">
 										<NavDropdown.Item href="#">
 											Profile

@@ -12,8 +12,8 @@ import {
 	ORDER_PAY_REQUEST,
 	ORDER_PAY_SUCCESS,
 } from '../constants/orderContants'
-// Create order
 
+// Create order
 export const createOrder = (order) => async (dispatch, getState) => {
 	try {
 		dispatch({
@@ -30,6 +30,8 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
 		// CREATE order
 		const { data } = await axios.post('/api/orders', order, config)
+		// TODO: change quantity in stock
+
 		dispatch({
 			type: ORDER_CREATE_SUCCESS,
 			payload: data,
@@ -126,6 +128,9 @@ export const payOrder = (orderId, paymentResult) => {
 				paymentResult,
 				config
 			)
+
+			// TODO: Change quantity in stock
+
 			dispatch({
 				type: ORDER_PAY_SUCCESS,
 				payload: data,

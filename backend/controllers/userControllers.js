@@ -17,6 +17,7 @@ export const authUser = asyncHandler(async (req, res) => {
 				_id: user._id,
 				name: user.name,
 				email: user.email,
+				isAdmin: user.isAdmin,
 				token: generateToken(user._id),
 			})
 		} else {
@@ -116,5 +117,19 @@ export const getUsers = asyncHandler(async (req, res) => {
 	} else {
 		res.status(401)
 		throw new Error('not authorized')
+	}
+})
+
+// Delete an user
+
+export const deleteUser = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.params.id)
+
+	if (user) {
+		await user.remove()
+		res.json({ message: 'User removed' })
+	} else {
+		res.status(400)
+		throw new Error('Not found')
 	}
 })

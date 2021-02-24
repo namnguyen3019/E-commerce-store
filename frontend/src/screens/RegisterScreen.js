@@ -24,9 +24,9 @@ const RegisterScreen = ({ location, history }) => {
 
 	useEffect(() => {
 		if (userInfo) {
-			history.push(redirect)
+			history.push('/')
 		}
-	}, [history, userInfo, redirect])
+	}, [history, userInfo])
 
 	const submitHandler = (e) => {
 		e.preventDefault()
