@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,6 +14,7 @@ const ProductEditScreen = ({ match, history }) => {
 	const [countInStock, setCountInStock] = useState(0)
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState('')
+	const [uploading, setUploading] = useState(false)
 
 	const productDetails = useSelector((state) => state.productDetails)
 	const { loading, error, product } = productDetails
@@ -47,6 +49,27 @@ const ProductEditScreen = ({ match, history }) => {
 		}
 	}, [dispatch, product, productId, updateSuccess])
 
+	const uploadFileHandler = async (e) => {
+		const file = e.target.files[0]
+		const formData = new FormData()
+		formData.append('image', file)
+		setUploading(true)
+
+		try {
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			}
+
+			const { data } = await axios.post('/api/uploads', formData, config)
+			setImage(data)
+			setUploading(false)
+		} catch (error) {
+			console.log(error)
+			setUploading(false)
+		}
+	}
 	const onSubmitHandler = (e) => {
 		e.preventDefault()
 		dispatch(
@@ -130,17 +153,6 @@ const ProductEditScreen = ({ match, history }) => {
 								/>
 							</Form.Group>
 						</Col>
-						<Col>
-							<Form.Group>
-								<Form.Label>Image</Form.Label>
-								<Form.Control
-									type="text"
-									placeholder="Image"
-									value={image}
-									onChange={(e) => setImage(e.target.value)}
-								/>
-							</Form.Group>
-						</Col>
 					</Row>
 					<Row>
 						<Col>
@@ -158,12 +170,13 @@ const ProductEditScreen = ({ match, history }) => {
 						</Col>
 						<Col>
 							<Form.Group>
+								<Form.Label>{image}</Form.Label>
 								<Form.File
 									className="position-relative"
 									name="file"
-									label="File"
-									id="validationFormik107"
-									feedbackTooltip
+									label="Choose File"
+									id="image-file"
+									onChange={uploadFileHandler}
 								/>
 							</Form.Group>
 						</Col>
