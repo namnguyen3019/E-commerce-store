@@ -38,11 +38,18 @@ const Header = ({ history }) => {
 									id="username"
 								>
 									{userInfo.isAdmin ? (
-										<LinkContainer to="/users/userlist">
-											<NavDropdown.Item href="#">
-												User List
-											</NavDropdown.Item>
-										</LinkContainer>
+										<>
+											<LinkContainer to="/users/userlist">
+												<NavDropdown.Item href="#">
+													User List
+												</NavDropdown.Item>
+											</LinkContainer>
+											<LinkContainer to="/admin/products">
+												<NavDropdown.Item href="#">
+													Product list
+												</NavDropdown.Item>
+											</LinkContainer>
+										</>
 									) : null}
 									<LinkContainer to="/profile">
 										<NavDropdown.Item href="#">

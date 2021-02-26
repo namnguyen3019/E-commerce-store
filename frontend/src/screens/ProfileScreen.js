@@ -23,7 +23,6 @@ const ProfileScreen = ({ history }) => {
 	const { success } = userUpdateProfile
 
 	const orderList = useSelector((state) => state.orderList)
-	console.log(orderList)
 	const {
 		loading: loadingOrderList,
 		success: loadingOrderListSuccess,
@@ -51,10 +50,10 @@ const ProfileScreen = ({ history }) => {
 
 	// Fetching all orders
 	useEffect(() => {
-		if (!loadingOrderListSuccess && !loadingOrderListError) {
+		if (loadingOrderList) {
 			dispatch(getMyOrders())
 		}
-	}, [dispatch, orderList])
+	}, [dispatch])
 
 	const submitHandler = (e) => {
 		e.preventDefault()

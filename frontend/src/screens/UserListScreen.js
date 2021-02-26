@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteUser, getUserList } from '../actions/userActions'
+import { Link } from 'react-router-dom'
+import { deleteUser, getUserList } from '../actions/adminActions'
 const UserListScreen = ({ history }) => {
 	const userInfo = useSelector((state) => state.userLogin.userInfo)
 	const userList = useSelector((state) => state.userList)
@@ -15,18 +16,19 @@ const UserListScreen = ({ history }) => {
 	const dispatch = useDispatch()
 	console.log(userList)
 	useEffect(() => {
-		if ((userInfo && userInfo.isAdmin) || successDeleteUser) {
-			dispatch(getUserList())
+		if (userInfo && userInfo.isAdmin) {
+			if (!loadingDeteleUser) {
+				dispatch(getUserList())
+			}
 		} else {
 			history.push('/')
 		}
-	}, [dispatch, userInfo, successDeleteUser])
+	}, [dispatch, userInfo, successDeleteUser, history])
 
 	const deleteHandler = (id) => {
-		dispatch(deleteUser(id))
-		// if (userDelete && userDelete.success) {
-		// 	dispatch(getUserList())
-		// }
+		if (window.confirm('Are you sure')) {
+			dispatch(deleteUser(id))
+		}
 	}
 	return (
 		<div>
@@ -53,7 +55,14 @@ const UserListScreen = ({ history }) => {
 									<td>{user.email}</td>
 									<td>{user.isAdmin ? 'admin' : null}</td>
 									<td className="mx-auto">
-										<Button className="mx-2">Edit</Button>
+										<Link
+											exact
+											to={`/users/userlist/${user._id}`}
+										>
+											<Button className="mx-2">
+												Edit
+											</Button>
+										</Link>
 										<Button
 											onClick={() =>
 												deleteHandler(user._id)

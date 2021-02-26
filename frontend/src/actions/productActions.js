@@ -1,13 +1,23 @@
 import axios from 'axios'
 import {
+	PRODUCT_CREATE_FAIL,
+	PRODUCT_CREATE_REQUEST,
+	PRODUCT_CREATE_SUCCESS,
+	PRODUCT_DELETE_FAIL,
+	PRODUCT_DELETE_REQUEST,
+	PRODUCT_DELETE_SUCCESS,
 	PRODUCT_DETAILS_FAIL,
 	PRODUCT_DETAILS_REQUEST,
 	PRODUCT_DETAILS_SUCCESS,
 	PRODUCT_LIST_FAIL,
 	PRODUCT_LIST_REQUEST,
 	PRODUCT_LIST_SUCCESS,
+	PRODUCT_UPDATE_FAIL,
+	PRODUCT_UPDATE_REQUEST,
+	PRODUCT_UPDATE_SUCCESS,
 } from '../constants/productConstants.js'
 
+// FETCHING all products
 export const listProducts = () => async (dispatch) => {
 	try {
 		dispatch({
@@ -19,6 +29,8 @@ export const listProducts = () => async (dispatch) => {
 			type: PRODUCT_LIST_SUCCESS,
 			payload: data,
 		})
+
+		localStorage.setItem('productList', JSON.stringify(data))
 	} catch (err) {
 		dispatch({
 			type: PRODUCT_LIST_FAIL,
@@ -27,6 +39,7 @@ export const listProducts = () => async (dispatch) => {
 	}
 }
 
+// Fetching a product details
 export const listProductDetails = (id) => async (dispatch) => {
 	try {
 		dispatch({
@@ -43,5 +56,96 @@ export const listProductDetails = (id) => async (dispatch) => {
 			type: PRODUCT_DETAILS_FAIL,
 			payload: err.message,
 		})
+	}
+}
+
+// Delete a product
+
+export const deleteProduct = (id) => {
+	return async function (dispatch, getState) {
+		try {
+			dispatch({
+				type: PRODUCT_DELETE_REQUEST,
+			})
+			const userInfo = getState().userLogin.userInfo
+			const config = {
+				headers: {
+					'Context-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+			const { data } = await axios.delete(`/api/products/${id}`, config)
+			dispatch({
+				type: PRODUCT_DELETE_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: PRODUCT_DELETE_FAIL,
+				payload: error.message,
+			})
+		}
+	}
+}
+
+// Create a product
+export const createProduct = () => {
+	return async function (dispatch, getState) {
+		try {
+			dispatch({
+				type: PRODUCT_CREATE_REQUEST,
+			})
+			const userInfo = getState().userLogin.userInfo
+			const config = {
+				headers: {
+					'Context-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+			const { data } = await axios.post(`/api/products/`, {}, config)
+
+			dispatch({
+				type: PRODUCT_CREATE_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: PRODUCT_CREATE_FAIL,
+				payload: error.message,
+			})
+		}
+	}
+}
+
+// UPDATE a product
+export const updateProduct = (id, product) => {
+	return async function (dispatch, getState) {
+		try {
+			dispatch({
+				type: PRODUCT_UPDATE_REQUEST,
+			})
+			const userInfo = getState().userLogin.userInfo
+			const config = {
+				headers: {
+					'Context-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+			const { data } = await axios.put(
+				`/api/products/${id}`,
+				product,
+				config
+			)
+
+			dispatch({
+				type: PRODUCT_UPDATE_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			dispatch({
+				type: PRODUCT_UPDATE_FAIL,
+				payload: error.message,
+			})
+		}
 	}
 }

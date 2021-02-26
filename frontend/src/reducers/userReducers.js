@@ -1,13 +1,23 @@
 import {
-	USER_DELETE_FAIL,
-	USER_DELETE_REQUEST,
-	USER_DELETE_SUCCESS,
+	DELETE_USER_BY_ADMIN_FAIL,
+	DELETE_USER_BY_ADMIN_REQUEST,
+	DELETE_USER_BY_ADMIN_RESET,
+	DELETE_USER_BY_ADMIN_SUCCESS,
+	FETCHING_USERS_BY_ADMIN_FAIL,
+	FETCHING_USERS_BY_ADMIN_REQUEST,
+	FETCHING_USERS_BY_ADMIN_SUCCESS,
+	GET_USER_BY_ADMIN_FAIL,
+	GET_USER_BY_ADMIN_REQUEST,
+	GET_USER_BY_ADMIN_SUCCESS,
+	UPDATE_USER_BY_ADMIN_FAIL,
+	UPDATE_USER_BY_ADMIN_REQUEST,
+	UPDATE_USER_BY_ADMIN_RESET,
+	UPDATE_USER_BY_ADMIN_SUCCESS,
+} from '../constants/adminContants.js'
+import {
 	USER_DETAILS_FAIL,
 	USER_DETAILS_REQUEST,
 	USER_DETAILS_SUCCESS,
-	USER_LIST_FAIL,
-	USER_LIST_REQUEST,
-	USER_LIST_SUCCESS,
 	USER_LOGIN_FAIL,
 	USER_LOGIN_REQUEST,
 	USER_LOGIN_SUCCESS,
@@ -121,17 +131,17 @@ export const userUpdateProfileReducer = (state = {}, action) => {
 
 export const userListReducer = (state = { userList: [] }, action) => {
 	switch (action.type) {
-		case USER_LIST_REQUEST:
+		case FETCHING_USERS_BY_ADMIN_REQUEST:
 			return {
 				loading: true,
 			}
-		case USER_LIST_SUCCESS:
+		case FETCHING_USERS_BY_ADMIN_SUCCESS:
 			return {
 				loading: false,
 				success: true,
 				userList: action.payload,
 			}
-		case USER_LIST_FAIL:
+		case FETCHING_USERS_BY_ADMIN_FAIL:
 			return {
 				loading: false,
 				error: action.payload,
@@ -145,20 +155,79 @@ export const userListReducer = (state = { userList: [] }, action) => {
 // DELETE a user
 export const userDeleteReducer = (state = {}, action) => {
 	switch (action.type) {
-		case USER_DELETE_REQUEST:
+		case DELETE_USER_BY_ADMIN_REQUEST:
 			return {
 				loading: true,
 			}
-		case USER_DELETE_SUCCESS:
+		case DELETE_USER_BY_ADMIN_SUCCESS:
 			return {
 				loading: false,
 				success: true,
 			}
-		case USER_DELETE_FAIL:
+		case DELETE_USER_BY_ADMIN_FAIL:
 			return {
 				loading: false,
+				success: false,
 				error: action.payload,
 			}
+		case DELETE_USER_BY_ADMIN_RESET:
+			return {}
+		default:
+			return state
+	}
+}
+
+// Get user profile by Admin
+export const userProfileByAdminReducer = (
+	state = { loading: true, userProfile: {} },
+	action
+) => {
+	switch (action.type) {
+		case GET_USER_BY_ADMIN_REQUEST:
+			return {
+				loading: true,
+			}
+		case GET_USER_BY_ADMIN_SUCCESS:
+			return {
+				loading: false,
+				success: true,
+				userProfile: action.payload,
+			}
+		case GET_USER_BY_ADMIN_FAIL:
+			return {
+				loading: false,
+				success: false,
+				error: action.payload,
+			}
+		default:
+			return state
+	}
+}
+
+// UPDATE user by Admin
+export const userUpdateByAdminReducer = (
+	state = { loading: true, updatedUser: {} },
+	action
+) => {
+	switch (action.type) {
+		case UPDATE_USER_BY_ADMIN_REQUEST:
+			return {
+				loading: true,
+			}
+		case UPDATE_USER_BY_ADMIN_SUCCESS:
+			return {
+				loading: false,
+				success: true,
+				updatedUser: action.payload,
+			}
+		case UPDATE_USER_BY_ADMIN_FAIL:
+			return {
+				loading: false,
+				success: false,
+				error: action.payload,
+			}
+		case UPDATE_USER_BY_ADMIN_RESET:
+			return {}
 		default:
 			return state
 	}
