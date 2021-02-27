@@ -2,6 +2,10 @@ import {
 	PRODUCT_CREATE_FAIL,
 	PRODUCT_CREATE_REQUEST,
 	PRODUCT_CREATE_RESET,
+	PRODUCT_CREATE_REVIEW_FAIL,
+	PRODUCT_CREATE_REVIEW_REQUEST,
+	PRODUCT_CREATE_REVIEW_RESET,
+	PRODUCT_CREATE_REVIEW_SUCCESS,
 	PRODUCT_CREATE_SUCCESS,
 	PRODUCT_DELETE_FAIL,
 	PRODUCT_DELETE_REQUEST,
@@ -125,6 +129,30 @@ export const productUpdateReducer = (
 			}
 		case PRODUCT_UPDATE_RESET:
 			return { updatedProduct: {} }
+		default:
+			return state
+	}
+}
+
+// PRODUCT CREATE REVIEW
+export const productCreateReviewReducer = (state = {}, action) => {
+	switch (action.type) {
+		case PRODUCT_CREATE_REVIEW_REQUEST:
+			return {
+				loading: true,
+			}
+		case PRODUCT_CREATE_REVIEW_SUCCESS:
+			return {
+				loading: false,
+				success: true,
+			}
+		case PRODUCT_CREATE_REVIEW_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			}
+		case PRODUCT_CREATE_REVIEW_RESET:
+			return {}
 		default:
 			return state
 	}
