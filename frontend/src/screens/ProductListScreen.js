@@ -98,10 +98,9 @@ const ProductListScreen = ({ history, match }) => {
 										<td>{product.brand}</td>
 										<td className="mx-auto">
 											<Row className="align-items-center">
-												<Col md="6">
+												<Col md={6}>
 													<Button
 														size="sm"
-														block
 														onClick={() =>
 															history.push(
 																`/admin/products/${product._id}/edit`

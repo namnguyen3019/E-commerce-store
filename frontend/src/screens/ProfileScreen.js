@@ -5,6 +5,7 @@ import { getMyOrders } from '../actions/orderActions'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Meta from '../components/Meta'
 import MyOders from '../components/MyOders'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userContants'
 const ProfileScreen = ({ history }) => {
@@ -66,6 +67,11 @@ const ProfileScreen = ({ history }) => {
 	}
 	return (
 		<Container>
+			<Meta
+				title="Welcome to my Shop| Profile "
+				description="Your profile Page"
+				keyword="profile"
+			/>{' '}
 			<Row>
 				<Col sm={12} md={3}>
 					{success && (

@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Meta from '../components/Meta'
 import Paginate from '../components/Paginate'
 import Product from '../components/Product'
-
+import TopProductCarousel from '../components/TopProductCarousel'
 const HomeScreen = ({ match }) => {
 	const keyword = match.params.keyword
 	const pageNumber = match.params.pageNumber || 1
@@ -21,6 +22,12 @@ const HomeScreen = ({ match }) => {
 
 	return (
 		<>
+			<Meta
+				title="Welcome to my Shop"
+				description=" This is most favarite shop from 2020-2030"
+				keyword="fashion"
+			/>{' '}
+			{!keyword && <TopProductCarousel />}
 			<h1> Latest Products</h1>
 			{loading ? (
 				<Loader />
