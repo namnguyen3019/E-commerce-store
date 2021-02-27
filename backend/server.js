@@ -15,10 +15,6 @@ const app = express()
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-	res.send('API is running')
-})
-
 // Product Routes
 app.use('/api/products', productRoutes)
 // User Routes
@@ -39,6 +35,16 @@ app.get('/api/config/paypal', (req, res) =>
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
+if (process.env.NODE_ENV === 'PRODUCTION') {
+	app.use(express.static(path.join(__dirname, '/frontend/build')))
+	app.get('*', (req, res) =>
+		res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+	)
+} else {
+	app.get('/', (req, res) => {
+		res.send('API is running')
+	})
+}
 const PORT = process.env.PORT || 5000
 app.listen(
 	PORT,

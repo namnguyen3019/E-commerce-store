@@ -17,7 +17,7 @@ const TopProductCarousel = () => {
 			{products.length > 0 &&
 				products.map((product) => {
 					return (
-						<Carousel.Item key={product._id} interval={1000}>
+						<Carousel.Item key={product._id} interval={5000}>
 							<Link to={`/products/${product._id}`}>
 								<Image
 									src={product.image}
