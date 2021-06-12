@@ -1,6 +1,6 @@
 ### How run this app:
 
-1. Clone this respo
+1. Clone this repository
 2. Run server: "node backend/server.js"
 3. Run client: "npm start --prefix frontend"
 
